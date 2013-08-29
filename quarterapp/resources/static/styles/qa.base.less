@@ -1,0 +1,360 @@
+
+html {
+    background-color: @header_bg_color;
+}
+
+body {
+    color: @main_color;
+    font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-size: @text_base_size;
+    font-weight: 200;
+    line-height: @text_base_height;
+    background-color: @body_bg_color;
+}
+
+a:link, a:visited {
+    color: @link_color;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:focus ,a:hover, a:active {
+    outline: 0;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+h1, h2, h3, h4 {
+    color: @emphasis_color;
+    font-weight: 200;
+}
+
+h1 {
+    font-size: 36px;
+    padding: 20px 0px;
+}
+
+h2 {
+    font-size: 28px;
+    padding: 10px 0px;
+}
+
+h3 {
+    font-size: 20px;
+    padding: 8px 0px;
+}
+
+h4 {
+    font-size: 18px;
+    padding: 5px 0px;
+}
+
+strong {
+    font-weight: bold;
+}
+
+p {
+    margin: 24px 0px;
+}
+
+li {
+    list-style: circle;
+    margin: 10px 0px;
+}
+
+
+/** States *******************************************************************/
+
+.is-clear {
+    clear: both;
+}
+
+.is-left {
+    float: left;
+}
+
+.is-right  {
+    float: right;
+}
+
+
+/** Page regions **************************************************************/
+
+#header-region {
+    background-color: @header_bg_color;
+    font-weight: 400;
+}
+
+#page-region {
+}
+
+#footer-region {
+}
+
+
+/** Page header **************************************************************/
+
+#header-region .container {
+    padding: 0px;
+}
+
+#header-wrapper {
+    margin: 0px auto;
+    max-width: 1024px;
+}
+
+header.main {
+    padding: 10px 60px;
+}
+
+#logo { 
+    background: url("/static/images/qa-logo-small.png") no-repeat 0 0;
+    min-height: 32px;
+    min-width: 32px;
+    float: left;
+    margin-left: 20px;
+
+    h1 {
+        line-height: 32px;
+        padding: 0px 40px;
+        font-size: 20px;
+        letter-spacing: 1px;
+    }
+}
+
+
+/** Navigation ***************************************************************/
+
+header.main {
+
+    li {
+        list-style: none;
+        margin: 0px;
+    }
+
+    nav {
+        list-style: none;
+        float: right;
+        line-height: 32px;
+        margin: 0px;
+        margin-right: 20px;
+
+        li {
+            float: left;
+            margin-left: 16px;
+            margin-right: 0px;
+
+            a {
+                text-decoration: none;
+                color: @header_color;
+                &:hover {
+                    color: @header_color;
+                    color: lighten(@header_color, 20);
+                }
+            }
+            
+            .folded {
+                display: none;
+                position: absolute;
+                background-color: #ffffff;
+                border: 1px solid @border_color;
+                border-radius: 4px;
+                min-width: 165px;
+
+                li {
+                    position: relative;
+                    margin: 0;
+                    padding: 0;
+                    float: none;
+
+                    a {
+                        padding: 0 20px;
+                        color: #44413c;
+                        display: block;
+                        border-radius: 2px;
+                        &:hover {
+                            background-color: #efefef;
+                        }
+                    }
+                }
+
+                &:before
+                {
+                    content: ' ';
+                    position: absolute;
+                    width: 0;
+                    height: 0;
+                    right: 60px;
+                    top: -5px;
+                    border-left: 5px solid transparent;
+                    border-right: 5px solid transparent;
+                    border-bottom: 5px solid @border_color;
+                }
+            }
+            
+            &:hover .folded {
+                display: block;
+            }
+        }
+    }
+}
+
+/** Main region **************************************************************/
+
+#page-region {
+    background-color: @main_bg_color;
+    border-top: 1px solid @border_color;
+    border-bottom: 1px solid @border_color;
+}
+
+#main-wrapper {
+    margin: 0px auto;
+    width: 1024px;
+}
+
+#pre-main-region {
+    float: left;
+    min-width: 256px;
+    width: 256px;
+}
+
+#main-region {
+    float: left;
+    min-width: 512px;
+    width: 512px;
+}
+
+#wide-main-region {
+    float: left;
+    min-width: 768px;
+    width: 768px;
+}
+
+#post-main-region {
+    float: left;
+    min-width: 256px;
+    width: 256px;
+}
+
+#admin-region {
+    margin: 0px auto;
+    width: 768px;
+}
+
+/** Footer *******************************************************************/
+
+footer.main {
+    font-size: @text_small_size;
+    background-color: @footer_bg_color;
+    padding: 20px 60px;
+    border-top: 1px solid @footer_border_color;
+    text-align: center;
+}
+
+footer a.icon.github {
+    position: absolute;
+    right: 20px;
+}
+
+footer a.icon.twitter {
+    position: absolute;
+    right: 60px;
+}
+
+footer.main ul,
+footer.main ul li {
+    list-style: none;
+}
+
+footer.main a.icon {
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+footer.main a,
+footer.main a:focus,
+footer.main a:active {
+    color: @main_color;
+    text-decoration: none;
+    font-weight: normal;
+}
+footer.main a:hover {
+    color: @emphasis_color;
+}
+
+/** Containers and sections ***************************************************/
+
+.container {
+    padding: 30px 10px 10px 10px;
+}
+
+.container.main {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.actions {
+    padding-top: 20px;
+}
+
+/** Generic classes **********************************************************/
+
+.group {
+    margin-bottom: 30px;
+}
+
+.note {
+    text-align: center;
+    margin: 0px;
+}
+
+.instruction {
+    padding: 0px 10px 30px 10px;
+
+    .button {
+        float: none;
+        text-align: center;
+        margin: 0px;
+    }
+}
+
+.keyword {
+    color: @keyword_color;
+    font-weight: bold;
+}
+
+.message.negative {
+    color: @negative_color;
+}
+
+.message.positive {
+    color: @positive_color;
+}
+
+.container.even {
+    .illustration {
+        float: left;
+        min-width: 300px;
+        max-width: 300px;
+    }
+
+    .content {
+        float: right;
+        min-width: 600px;
+        max-width: 600px;
+    }
+}
+
+.container.odd {    
+    .illustration {
+        float: right;
+        min-width: 300px;
+        max-width: 300px;
+    }
+
+    .content {
+        float: left;
+        min-width: 600px;
+        max-width: 600px;
+    }
+}

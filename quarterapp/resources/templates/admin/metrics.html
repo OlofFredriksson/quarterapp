@@ -1,0 +1,52 @@
+{% extends "../resources/templates/admin/view_base.html" %}
+
+{% block title %}
+Metrics
+{% end %}
+
+{% block main %}
+<div class="container main">
+    <section class="header">
+        <h1>Metrics</h1>
+    </section>
+    <section class="content">
+        <form id="general-settings">
+            <div class="setting-group">
+                <div class="setting-control">
+                    <div class="metric">{{ user_count }}</div>
+                </div>
+                <div class="setting-description">
+                    <strong>Registered users</strong>
+                    <p class="note">Number of users that has an active user account.</p>
+                </div>
+                <div class="clear-fix"></div>
+            </div>
+
+            <div class="setting-group">
+                <div class="setting-control">
+                    <div class="metric">{{ signup_count }}</div>
+                </div>
+                <div class="setting-description">
+                    <strong>Signups</strong>
+                    <p class="note">Number of users that have signed up but not activated their account.</p>
+                </div>
+                <div class="clear-fix"></div>
+            </div>
+
+            <div class="setting-group">
+                <div class="setting-control">
+                    <div class="metric">{{ quarter_count }}</div>
+                </div>
+                <div class="setting-description">
+                    <strong>Quarters reported</strong>
+                    <p class="note">Total number of quarters reported in this system.</p>
+                </div>
+                <div class="clear-fix"></div>
+            </div>
+        </form>
+    </section>
+</div>
+{% end %}
+
+{% block modals %}
+{% end %}

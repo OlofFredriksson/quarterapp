@@ -1,0 +1,152 @@
+{% extends "../resources/templates/view_base.html" %}
+
+{% block title %}
+Timesheet
+{% end %}
+
+{% block pre-main %}
+<div class="container widget current-date">
+    <section class="content">
+        <a class="date icon previous" id="previous-date" href="/application/timesheet/{{ yesterday }}">&nbsp;</a>
+        <div class="picker" id="datepicker">{{ date }}</div>
+
+        <a class="date icon next" id="next-date" href="/application/timesheet/{{ tomorrow }}">&nbsp;</a>
+    </section>
+</div>
+
+<div class="container widget time-summary">
+    <section class="content">
+        <div class="total-time">
+            <span id="summary-hours">{{ summary_total }}</span>
+            <span class="unit">hours</span>
+        </div>
+        <table id="sheet-summary">
+            <tbody>
+                {% if summary %}                        
+                    {% for index, activity in enumerate(summary) %}
+                    <tr data-activity-id="{{ activity['id'] }}" style="color: {{ activity['color'] }};">
+                        <td class="sheettime-value">{{ activity["sum"] }}</td>
+                        <td class="sheettime-name">{{ activity["title"] }}</td>
+                    </tr>
+                    {% end %}
+                {% end %}
+            </tbody>
+        </table>
+    </section>
+</div>
+
+<div class="container">
+    <section class="instruction">
+        <span class="keyword">Double click</span> a segment of activities to enter an optional <span class="keyword">comment</span>, just to help you remember what you did that period of time.
+    </section>
+    <section class="instruction">
+        <span class="keyword">Right click</span> a quarter to erase the registered activity.
+    </section>
+</div>
+{% end %}
+
+{% block main %}
+<div class="container sheet">
+    <section class="content">
+        <div class="extend-sheet">
+            <div id="extend-sod" class="icon sod"></div>
+        </div>
+        <table class="sheet" id="sheet" data-sheet-date="{{ date }}">
+            <tbody>
+                {% for index, quarter in enumerate(quarters) %}
+                    {% if (index == 0) or (index % 4 == 0) %}
+                        {% if index == 0 %}
+                            </tr>
+                        {% end %}
+                        <tr>
+                            <th class="time">{{ int(index/4) }}:00</th>
+                    {% end %}
+
+                    <td class="activity-cell">
+                        <span class="activity-cell"
+                            data-activity-index="{{ index }}"
+                            data-activity-id="{{ quarter.activity_id }}"
+                            data-quarter-id="{{ quarter.id }}"
+                            style="background-color: {{ quarter.color }}; border-color: {{ quarter.border_color }};">
+                            {% if quarter.comment_id > 0 %}
+                                <span class="comment icon comment" style="color: {{ quarter.border_color }};">&nbsp;</span>
+                            {% end %}
+                        </span></td>
+                {% end %}
+            </tbody>
+        </table>
+        <div class="extend-sheet">
+            <div id="extend-eod" class="icon eod"></div>
+        </div>
+    </section>
+</div>
+{% end %}
+
+{% block post-main %}
+<div class="container widget activity-list">
+    <section class="content">
+        <ul>
+            <li class="category-row">
+                <div class="category-title" data-category-id="-1" data-category-title="Default">
+                    <span class="icon medium category">&nbsp;</span>Default
+                </div>
+                <ul>
+                    <li class="activity-row" data-activity-id="-1" data-activity-color="#fff" data-activity-title="Idle">
+                        <div class="activity-title">Idle</div>
+                        <div class="activity-palette" style="background-color: #fff;"></div>
+                        <span class="icon">&nbsp;</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <ul>
+            {% for category in categories_and_activities %}
+                {% if not category.is_empty() %}
+                <li class="category-row">
+                    <div class="category-title" data-category-id="{{ category.id }}" data-category-title="{{ category.title }}">
+                        <span class="icon medium category">&nbsp;</span>{{ category.title }}
+                    </div>
+                    <ul>
+                        {% for activity in category.activities %}
+                            {% if not activity.disabled() %}
+                                <li class="activity-row" data-activity-id="{{ activity.id }}" data-activity-color="{{ activity.color }}" data-activity-title="{{ activity.title }}">
+                                    <div class="activity-title">{{ activity.title }}</div>
+                                    <div class="activity-palette" style="background-color: {{ activity.color }};"></div>
+
+                                    <span class="icon">&nbsp;</span>
+                                </li>
+                            {% end %}
+                        {% end %}
+                    </ul>
+                </li>
+                {% end %}
+            {% end %}
+        </ul>
+    </section>
+</div>
+{% end %}
+
+{% block modals %}
+<div id="comment-modal" class="modal">
+    <form id="comment-form" data-validation>
+        <section class="header">
+            <h2>Comment</h2>
+        </section>
+        <section class="content">
+            <fieldset>
+                <label for="title">Quarter comment:</label>
+                <textarea rows="4" name="comment" id="comment" data-validator="required">
+                </textarea>
+            </fieldset>
+            <div class="message">
+                &nbsp;
+            </div>
+        </section>
+        <section class="actions">
+            <a class="button close" href="#">Close</a>
+            <button type="submit" class="positive">Save</button>
+            <div class="is-clear"></div>
+        </section>
+    </form>
+</div>
+{% end %}

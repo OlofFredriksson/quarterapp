@@ -1,0 +1,314 @@
+
+@sheet_cell_width:                              80px;
+@sheet_cell_height:                             30px;
+
+.container.widget {
+    border: 1px solid @widget_border_color;
+    background-color: @widget_bg_color;
+    color: @emphasis_color;
+    border-radius: 4px;
+    margin: 20px 0px;
+    padding: 10px;
+}
+
+.container.current-date {
+    text-align: center;
+
+    .content {
+        padding: 0px 20px;
+        margin: 0px auto;
+    }
+
+    .picker {
+        font-weight: lighter;
+        display: inline;
+        cursor: pointer;
+    }
+
+    .picker:hover {
+        color: @emphasis_color;
+    }
+
+    .icon:hover {
+        color: @emphasis_color;
+    }
+
+    .previous {
+        float: left;
+    }
+
+    .next {
+        float: right;
+    }
+
+    a:link, a:visited,
+    a:focus ,a:hover, a:active {
+        color: @main_color;
+    }
+}
+
+.container.time-summary {
+
+    .content {
+        padding: 8px 20px;
+    }
+
+    #summary-hours {
+        font-size: 36px;
+    }
+
+    .total-time {
+        font-size: @text_header_size;
+        text-align: center;
+        line-height: 60px;
+    }
+
+    td {
+        padding: 4px 8px;
+        line-height: 18px;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 120px;
+        text-overflow: ellipsis;
+        font-weight: bold;
+    }
+    
+    td.value {
+        text-align: right;
+    }
+
+    td.activity-name {
+        text-align: left;
+    }
+}
+
+.container.activity-list {
+    padding: 0px;
+    border-radius: 4px;
+
+    ul,
+    li {
+        list-style: none;
+        margin: 0px;
+    }
+
+    li.category-row {
+        display: inline;
+    }
+
+    .category-row {
+        min-height: 50px;
+        max-height: 50px;
+        line-height: 50px;
+    }
+
+    .activity-row {
+        min-height: 40px;
+        max-height: 40px;
+        line-height: 40px;
+        cursor: pointer;
+        border-bottom: 1px solid @widget_border_color;
+
+        .icon.current-activity {
+            float: right;
+            color: @positive_color;
+        }
+    }
+
+    .activity-row:hover {
+        background-color: #efefef;
+    }
+
+    .activity-row.current:before {
+        content: "B";
+    }
+
+    ul li ul li:first-of-type {
+        border-top: 1px solid @widget_border_color;
+    }
+
+    ul:last-of-type li:last-of-type ul li:last-of-type {
+        border-bottom: none;
+    }
+
+    .category-title {
+        padding: 0px 5px;
+        font-weight: 400;
+        max-width: 200px;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .activity-palette {
+        min-width: 10px;
+        max-width: 10px;
+        min-height: 40px;
+        max-height: 40px;
+        float: right;
+        border-left: 1px solid @widget_border_color;
+    }
+
+    .activity-title {
+        font-weight: 200;
+        line-height: 40px;
+        padding: 0px 10px;
+        float: left;
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.container.sheet {
+    margin: 20px;
+    background-color: @sheet_bg_color;
+    border: 1px solid @sheet_border_color;
+    border-radius: 4px;
+
+    .content {
+        padding: 0px 20px;
+    }
+
+    .sod,
+    .eod {
+        text-align: center;
+        line-height: 30px;
+    }
+
+    #extend-sod:hover,
+    #extend-eod:hover {
+        color: @emphasis_color;
+        cursor: pointer;
+    }
+}
+
+#sheet {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+
+    tbody {
+        border: none;   
+    }
+
+    th,
+    td {
+        border: none;
+        user-select: none;
+    }
+
+    tbody tr {
+        height: 33px;
+        min-height: 33px;
+    }
+
+    tbody th {
+        text-align: right;
+        padding-right: 14px;
+    }
+
+    tbody tr td {
+        padding: 5px 0px;
+        min-width: @sheet_cell_width;
+        width: @sheet_cell_width;
+        min-height: @sheet_cell_height;
+        height: @sheet_cell_height;
+    }
+
+    tbody tr td span.activity-cell {
+        border-top: 1px dashed @sheet_border_color;
+        border-bottom: 1px dashed @sheet_border_color;
+        
+        min-height: @sheet_cell_height;
+        height: @sheet_cell_height;
+        display: block;
+        cursor:pointer;
+    }
+
+    tbody tr td span.activity-cell:nth-child(odd) {
+        border-left: 1px dashed @sheet_border_color;
+    }
+
+    tbody tr td span.activity-cell:nth-child(even) {
+        border-right: 1px dashed @sheet_border_color;
+    }
+
+    tbody tr td:first-of-type span.activity-cell {
+        border-left: 1px dashed @sheet_border_color;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+        -webkit-border-top-left-radius: 3px;
+        -webkit-border-bottom-left-radius: 3px;
+        -moz-border-radius-topleft: 3px;
+        -moz-border-radius-bottomleft: 3px;
+    }
+
+    tbody tr td:last-of-type span.activity-cell {
+        border-right: 1px dashed @sheet_border_color;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        -webkit-border-top-right-radius: 3px;
+        -webkit-border-bottom-right-radius: 3px;
+        -moz-border-radius-topright: 3px;
+        -moz-border-radius-bottomright: 3px;
+    }
+
+    tbody tr td span.activity-cell.used {
+        border-top: 1px solid @sheet_border_color;
+        border-bottom: 1px solid @sheet_border_color;
+        border-left: 1px solid @sheet_border_color;
+        border-right: 1px solid @sheet_border_color;
+    }
+
+    tbody tr td:first-of-type span.activity-cell.used {
+        border-left: 1px solid @sheet_border_color;
+    }
+
+    tbody tr td:last-of-type span.activity-cell.used {
+        border-right: 1px solid @sheet_border_color;
+    }
+
+    .activity-cell .comment {
+        padding: 3px;
+        z-index: 1000;
+    }
+}
+
+/**
+Spinning stripes in CSS3 from:
+http://jsfiddle.net/brennan/mcYKE/
+*/
+span.activity-cell.pending {
+    background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+        color-stop(.25, rgba(0, 0, 0, .10)), 
+        color-stop(.25, transparent),
+        color-stop(.5, transparent), 
+        color-stop(.5, rgba(0, 0, 0, .10)),
+        color-stop(.75, rgba(0, 0, 0, .10)), 
+        color-stop(.75, transparent), 
+        to(transparent));
+    background-image: 
+        -moz-linear-gradient(-45deg, 
+            rgba(0, 0, 0, .10) 25%, 
+            transparent 25%,
+            transparent 50%, rgba(0, 0, 0, .10) 50%, 
+            rgba(0, 0, 0, .10) 75%, 
+            transparent 75%, transparent
+        );
+    background-size: 50px 50px;
+    -moz-background-size: 50px 50px;
+    -webkit-background-size: 50px 50px;
+    -webkit-animation: animate-stripes 2s linear infinite;
+}
+
+@-webkit-keyframes animate-stripes {
+    from {
+        background-position: 0 0;
+    } 
+    to {
+       background-position: -50px 0;
+    }
+}

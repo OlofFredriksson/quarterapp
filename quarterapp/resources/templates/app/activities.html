@@ -1,0 +1,132 @@
+{% extends "../resources/templates/view_base.html" %}
+
+{% block title %}
+Activities
+{% end %}
+
+{% block pre-main %}
+<div class="container">
+    <section class="instruction">
+        <span class="keyword">Activities</span> are sorted in <span class="keyword">categories</span>. A category is only used to group related activities
+        under a name, activities are then defined by a title and a color.
+    </section>
+
+    <section class="instruction">
+        If you <span class="keyword">disable</span> an activity you will not be able to select it for a timesheet, but it will still be visible for previous timesheets and reports. Of course you can <span class="keyword">enable</span> an activity again if you change your mind.
+    </section>
+    <section class="instruction">
+        A <span class="keyword">category</span> must be empty for you to be able to delete it.
+    </section>
+    <section class="instruction">
+        <a href="#" class="button" data-category-action="new">Create new category</a>
+    </section>
+</div>
+{% end %}
+
+{% block main %}
+<div class="container main">
+    {% for category in categories %}
+        <section class="group activities" data-category-id="{{ category.id }}">
+            <section class="header">
+                <h3><span class="icon medium category">&nbsp;</span><span class="category-title">{{ category.title }}</span></h3>
+            </section>
+            <section class="content">
+                {% for activity in category.activities %}
+                    {% if activity.disabled() %}
+                        <div class="activity-bar disabled">
+                    {% else %}
+                        <div class="activity-bar">
+                    {% end %}
+
+                        <div class="activity-palette" style="background-color: {{ activity.color }};"></div>
+                        <div class="activity-details">
+                            <div class="activity-title">{{ activity.title }}</div>
+                            <div class="quarter-count">Used in <span class="count">{{ activity.usage }}</span> quarters</div>
+                        </div>
+                        <a href="#" class="icon medium edit" data-activity-action="edit" data-activity-id="{{ activity.id }}" data-category-id="{{ category.id }}">&nbsp;</a>
+                        {% if activity.disabled() %}
+                            <span class="disabled"></span>
+                        {% end %}
+
+                    </div>
+                {% end %}
+            </section>
+            <section class="actions">
+                <a class="button positive" href="#" data-activity-action="new" data-category-id="{{ category.id }}">New activity</a>
+                <a class="button" href="#" data-category-action="edit" data-category-id="{{ category.id }}">Edit category</a>
+                {% if category.is_empty() %}
+                    <a class="button negative delete" href="#" data-category-action="delete" data-category-id="{{ category.id }}">Delete</a>
+                {% end %}
+            </section>
+        </section>
+    {% end %}
+</div>
+{% end %}
+
+{% block post-main %}
+<div class="container">
+</div>
+{% end %}
+
+{% block modals %}
+<div id="category-modal" class="modal">
+    <form id="category-form" data-validation>
+        <section class="header">
+            <h2>Create category</h2>
+        </section>
+        <section class="content">
+            <fieldset>
+                <label for="title">Category title:</label>
+                <input type="text" name="title" id="category-title"
+                    data-validator="required"
+                    data-validator-on="focus-loss" />
+            </fieldset>
+            <div class="message">
+                &nbsp;
+            </div>
+        </section>
+        <section class="actions">
+            <a class="button close" href="#">Close</a>
+            <button type="submit" class="positive">Save</button>
+            <div class="is-clear"></div>
+        </section>
+    </form>
+</div>
+
+<div id="activity-modal" class="modal">
+    <form id="activity-form" data-validation>
+        <section class="header">
+            <h2>Create activity</h2>
+        </section>
+        <section class="content">
+            <fieldset>
+                <label for="title">Activity title:</label>
+                <input type="text" name="title" id="activity-title" class="title"
+                    data-validator="required"
+                    data-validator-on="focus-loss" />
+            </fieldset>
+            <fieldset>
+                <label for="color">Activity color:</label>
+                <input type="text" name="color" id="color" class="color palette"
+                    data-validator="required"
+                    style="background-color: #fff" value="#fff" />
+            </fieldset>
+            <fieldset>
+                <label>Enabled:</label>
+                <div class="input switcher on">
+                    <div class="knob">&nbsp;</div>
+                </div>
+            </fieldset>
+            <div class="message">
+                &nbsp;
+            </div>
+        </section>
+        <section class="actions">
+            <a class="button close" href="#">Close</a>
+            <button type="submit" class="positive">Save</button>
+            <a class="button negative delete" href="#">Delete</a>
+            <div class="is-clear"></div>
+        </section>
+    </form>
+</div>
+{% end %}

@@ -1,0 +1,132 @@
+.setting-group {
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #ccc;
+}
+
+.setting-group:last-of-type {
+    margin-bottom: 0px;
+    border-bottom: none;
+}
+
+.setting-control {
+    float: left;
+}
+
+.setting-description {
+    text-align: left;
+    margin-left: 20px;
+}
+
+.setting-description .note {
+    text-align: left;
+}
+
+div.metric {
+    font-size: 28px;
+    line-height: 40px;
+    padding-right: 20px;
+}
+
+div.setting {
+    padding-right: 20px;   
+}
+
+form#user-settings input[type="text"],
+form#user-settings input[type="password"],
+form#user-settings input[type="email"] {
+    width: 450px;
+}
+
+form#user-settings {
+    margin: 0px auto;
+    width: 500px;
+    max-width: 500px;
+}
+
+table.users {
+    margin: 0 auto;
+    margin-bottom: 40px;
+    border: 1px solid #ccc;
+}
+
+table.users tbody {
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+table.users tr {
+    line-height: 24px;
+}
+
+table.users thead {
+    background-color: @users_table_bg_color;
+    color: @users_table_color;
+    text-shadow: none;
+    font-weight: bold;
+
+    th:first-of-type {
+        border-radius: 6px 0px 0px 0px;
+    }
+    th:last-of-type {
+        border-radius: 0px 6px 0px 0px;
+    }
+}
+
+table.users tbody tr {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+table.users tbody tr:nth-child(2n) {
+    background-color: #efefef;
+}
+
+table.users tfoot tr {
+    border-top: 1px solid #ccc;
+    font-weight: bold;
+}
+
+table.users thead th.username {
+    width: 400px;
+}
+
+table.users thead th.login {
+    width: 200px;
+}
+
+table.users thead th.disable,
+table.users thead th.delete,
+table.users thead th.type,
+table.users tbody td.disable,
+table.users tbody td.type,
+table.users tbody td.delete { 
+    width: 70px; 
+    text-align: center;
+}
+
+table.users th,
+table.users td {
+    padding: 3px 15px;
+}
+
+table.users td {
+    border-left: 1px solid #ccc;
+}
+
+.pagination {
+    text-align: center;
+}
+
+.pagination a {
+    margin-left: 15px;
+    text-decoration: underline;;
+}
+
+.pagination a.current {
+    text-decoration: none;
+}
+
+.pagination a:first-of-type {
+    margin-left: 0px;
+}

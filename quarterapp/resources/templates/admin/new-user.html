@@ -1,0 +1,54 @@
+{% extends "../resources/templates/admin/view_base.html" %}
+
+{% block title %}
+Create new user
+{% end %}
+
+{% block main %}
+<div class="container main">
+    <section class="content">
+        <form id="login-form" action="/admin/user/new" method="POST" data-validation>
+            <fieldset>
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username" 
+                    data-validator="required email"
+                    data-validator-on="focus-loss"  />
+            </fieldset>
+            <fieldset>
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password"
+                    data-validator="required password"
+                    data-validator-on="focus-loss" />
+            </fieldset>
+            <fieldset>
+                <label for="verify-password">Verify password:</label>
+                <input type="password" name="verify-password" id="verify-password"
+                    data-validator="required password mirror"
+                    data-validator-on="focus-loss"
+                    data-validator-mirror="password" />
+            </fieldset>
+            <fieldset>
+                <label for="normal">Type of user:</label>
+                <input type="radio" name="user-type" value="normal" checked />
+                <label for="normal">Normal</label>
+
+                <input type="radio" name="user-type" value="admin" />
+                <label for="admin">Administrator</label>
+            </fieldset>
+            <fieldset>
+                <button type="submit">Create</button>
+            </fieldset>
+        </form>
+        {% if completed %}
+        <div class="message positive note">
+            <span class="icon positive">&nbsp;</span>New user created successfully!
+        </div>
+        {% end %}
+        {% if error %}
+        <div class="message negative note">
+            <span class="icon error">&nbsp;</span>An error occured, could not create user!
+        </div>
+        {% end %}
+    </section>
+</div>
+{% end %}

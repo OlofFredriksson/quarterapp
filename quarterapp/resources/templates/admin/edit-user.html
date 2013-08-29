@@ -1,0 +1,92 @@
+{% extends "../resources/templates/admin/view_base.html" %}
+
+{% block title %}
+Edit user
+{% end %}
+
+{% block main %}
+<div class="container main">
+    <section class="content">
+        <form id="login-form" action="/admin/user/{{ user.id }}" method="POST" data-validation>
+            <fieldset>
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" readonly
+                    data-validator="required email"
+                    data-validator-on="focus-loss" 
+                    value="{{ user.username }}" />
+            </fieldset>
+            <fieldset>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password"
+                    data-validator="required password"
+                    data-validator-on="focus-loss" 
+                    value="{{ user.password }}" />
+            </fieldset>
+            <fieldset>
+                <label for="verify-password">Verify password</label>
+                <input type="password" name="verify-password" id="verify-password"
+                    data-validator="required password mirror"
+                    data-validator-on="focus-loss"
+                    data-validator-mirror="password"
+                    value="{{ user.password }}" />
+            </fieldset>
+            <fieldset>
+                <label for="normal">Type</label>
+                {% if not user.is_admin() %}
+                    <input type="radio" name="user-type" value="normal" checked />
+                {% else %}
+                    <input type="radio" name="user-type" value="normal" />
+                {% end %}
+                <label for="normal">Normal</label>
+
+                {% if user.is_admin() %}
+                    <input type="radio" name="user-type" value="admin" checked />
+                {% else %}
+                    <input type="radio" name="user-type" value="admin" />
+                {% end %}
+                <label for="admin">Administrator</label>
+            </fieldset>
+
+            <fieldset>
+                <label for="normal">State</label>
+                
+                {% if user.active() %}
+                    <input type="radio" name="user-state" value="active" checked />
+                {% else %}
+                    <input type="radio" name="user-state" value="active" />
+                {% end %}
+                <label for="active">Active</label>
+
+                {% if user.inactive() %}
+                    <input type="radio" name="user-state" value="inactive" checked />
+                {% else %}
+                    <input type="radio" name="user-state" value="inactive" />
+                {% end %}
+                <label for="inactive">Inactive</label>
+
+                {% if user.disabled() %}
+                    <input type="radio" name="user-state" value="disabled" checked />
+                {% else %}
+                    <input type="radio" name="user-state" value="disabled" />
+                {% end %}
+                <label for="disabled">Disabled</label>
+            </fieldset>
+
+            <fieldset>
+                <button type="submit" class="positive">Save</button>
+                <a href="/admin/user/delete/{{ user.id }}" class="button negative">Delete</a>
+            </fieldset>
+        </form>
+        {% if completed %}
+        <div class="message positive note">
+            <span class="icon positive">&nbsp;</span>Updated user successfully!
+        </div>
+        {% end %}
+        {% if error %}
+        <div class="message error note">
+            <span class="icon error">&nbsp;</span>An error occured, could not update user!
+        </div>
+        {% end %}
+    </section>
+</div>
+{% end %}

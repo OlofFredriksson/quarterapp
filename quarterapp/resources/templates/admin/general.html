@@ -1,0 +1,53 @@
+{% extends "../resources/templates/admin/view_base.html" %}
+
+{% block title %}
+General settings
+{% end %}
+
+{% block main %}
+<div class="container main">
+    <section class="header">
+        <h1>General settings</h1>
+    </section>
+    <section class="content">
+        <form id="general-settings">
+            <div class="setting-group">
+                <div class="setting-control">
+                    {% if allow_signups == "1" %}
+                        <input type="checkbox" id="allow-signups" name="allow-signups"
+                            onclick="javascript:quarterapp.admin.toggle_setting(this);" checked />
+                    {% else %}
+                        <input type="checkbox" id="allow-signups" name="allow-signups"
+                            onclick="javascript:quarterapp.admin.toggle_setting(this);" />
+                    {% end %}
+                </div>
+                <div class="setting-description">
+                    <strong>Allow signups</strong>
+                    <p class="note">Allow visitors to signup for an account - this will not create an account until the visitor activates the account.</p>
+                </div>
+                <div class="clear-fix"></div>
+            </div>
+
+            <div class="setting-group">
+                <div class="setting-control">
+                    {% if allow_activations == "1" %}
+                        <input type="checkbox" id="allow-activations" name="allow-activations"
+                            onclick="javascript:quarterapp.admin.toggle_setting(this);" checked />
+                    {% else %}
+                        <input type="checkbox" id="allow-activations" name="allow-activations"
+                            onclick="javascript:quarterapp.admin.toggle_setting(this);" />
+                    {% end %}
+                </div>
+                <div class="setting-description">
+                    <strong>Allow activation</strong>
+                    <p class="note">Allow new users to activate their account after signup - this will create the account.</p>
+                </div>
+                <div class="clear-fix"></div>
+            </div>
+        </form>
+    </section>
+</div>
+{% end %}
+
+{% block modals %}
+{% end %}

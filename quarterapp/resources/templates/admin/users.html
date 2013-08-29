@@ -1,0 +1,92 @@
+{% extends "../resources/templates/admin/view_base.html" %}
+
+{% block title %}
+Users
+{% end %}
+
+{% block main %}
+<div class="container">
+    <header class="header">
+        <h1>Users</h1>
+    </header>
+    <section class="content">
+        <p>Filter the user table on username, if empty all users will be listed. The filter keyword will be treated as a single wildcard. Also, you can <a href="/admin/user/new">create a new user account</a> without the need for activation.</p>            
+
+        <form id="user-settings" action="/admin/users" method="POST">
+            <fieldset>
+                <label for="filter">Username</label>
+                {% if query_filter %}
+                    <input type="text" id="filter" name="filter" value="{{ query_filter }}" autofocus="autofocus" />
+                {% else %}
+                    <input type="text" id="filter" name="filter" autofocus="autofocus" />
+                {% end %}
+            </fieldset>
+            <fieldset>
+                <button type="submit">Filter</button>
+
+                {% if query_filter %}
+                    <button type="submit" onclick="javascript:quarterapp.admin.clear_filter();">Clear</button>
+                {% else %}
+                    <button type="submit" disabled="disabled">Clear</button>
+                {% end %}
+            </fieldset>
+        </form>
+
+        {% if error %}
+        <div class="error-message note">
+            <p>An error occured, could not read users!</p>
+        </div>
+        {% else %}
+    </section>
+</div>
+<div class="container">
+    <section class="content">
+        <table id="users" class="users">
+            <thead>
+                <th class="username">Username</th>
+                <th class="login">Last login</th>
+                <th class="type">Type</th>
+                <th class="state">State</th>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td><a href="/admin/user/{{ user.id }}">{{ user.username }}</a></td>
+                    <td>{{ user.last_login }}</td>
+                    
+                    {% if user.is_admin() %}
+                        <td class="type">Admin</td>
+                    {% else %}
+                        <td class="type">User</td>
+                    {% end %}
+
+                    {% if user.active() %}
+                        <td class="state">Active</td>
+                    {% elif user.disabled() %}
+                        <td class="state">Disabled</td>
+                    {% else %}
+                        <td class="state">Inactive</td>
+                    {% end %}
+                </tr>
+                {% end %}
+            </tbody>
+        </table>
+        {% end %}
+
+        {% if len(pagination) > 1 %}
+            <div class="pagination">
+            {% for page in pagination %}
+                {% if page['current'] == True %}
+                    <a href="{{ page['link'] }}" class="current">{{ page['index'] }}</a>
+                {% else %}
+                    <a href="{{ page['link'] }}">{{ page['index'] }}</a>
+                {% end %}
+            {% end %}
+            </div>
+        {% end %}
+    </section>
+</div>
+{% end %}
+
+{% block modals %}
+{% end %}

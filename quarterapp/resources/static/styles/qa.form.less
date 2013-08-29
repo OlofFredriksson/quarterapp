@@ -1,0 +1,127 @@
+
+button,
+a.button {
+    float: right;
+    outline: 0;
+    padding: 6px 20px;
+    margin: 0px 0px 0px 10px;
+    display: block;
+    color: @button_text_color;
+    background-color: @button_color;
+    border-radius: 3px;
+    border: 1px solid @button_border_color;
+}
+
+a.button:link {
+    color: #fff;
+    font-weight: normal;
+    padding: 4px 20px;
+}
+
+a.button:link, a.button:visited, a.button:focus,
+a.button:hover, a.button:active {
+    color: #fff;
+}
+
+button.negative,
+a.button.negative {
+    background-color: @negative_color;
+    border-color: darken(@negative_color, 10);
+}
+
+button.positive,
+a.button.positive {
+    background-color: @positive_color;
+    border-color: darken(@positive_color, 10);
+}
+
+button:hover,
+a.button:hover {
+    background-color: darken(@button_color, 5);
+    border-color: darken(@button_border_color, 10);
+    cursor: pointer;
+    color: #fff;
+}
+
+button.negative:hover,
+a.button.negative:hover {
+    background-color: darken(@negative_color, 5);
+    border-color: darken(@negative_color, 10);
+    cursor: pointer;
+    color: #fff;
+}
+
+button.positive:hover,
+a.button.positive:hover {
+    background-color: darken(@positive_color, 5);
+    border-color: darken(@positive_color, 10);
+    cursor: pointer;
+    color: #fff;
+}
+
+fieldset {
+    padding: 5px 20px;
+}
+
+label {
+    float: left;
+    padding: 3px 1px;
+    font-weight: 400;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea {
+    clear: left;
+    display: block;
+    padding: 6px;
+    border: 1px solid @input_border_color;
+    border-radius: 3px;
+    outline: none;
+    text-align: left;
+    width: 100%;
+    -webkit-appearance: none;
+    margin-bottom: 8px;
+}
+
+div.input {
+    clear: left;
+    display: block;
+}
+
+input[type="text"].color {
+    color: transparent;
+    min-width: 48px;
+    max-width: 48px;
+    cursor: pointer;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.11);
+}
+
+input.error {
+    border-color: @input_error_color;
+    background-color: @input_error_bg_color;
+}
+
+div.input-error {
+    float: left;
+    padding: 2px 6px;
+    color: @input_error_color;
+    font-style: oblique;
+}
+
+input[type="radio"] {
+    margin-right: 6px;
+    height: 20px;
+    float: left;
+    clear: left;
+}
+
+input[type="radio"]~label {
+    padding: 0px;
+    font-weight: normal;
+}
+
+input[readonly] {
+    background-color: @input_disabled_bg_color;
+}

@@ -1,0 +1,68 @@
+{% extends "../resources/templates/view_base.html" %}
+
+{% block title %}
+Activate account
+{% end %}
+
+{% block pre-main %}
+<div class="container">
+</div>
+{% end %}
+
+{% block main %}
+<div class="container main">
+    <section class="content">
+        <p>Enter the activation code you received in the signup e-mail and the password you want. Once this form is completed you will be logged in and can enjoy quarterapp.</p>
+        <form id="activation-form" action="/activate" method="POST" data-validation>
+            <fieldset>
+                <label for="code" class="">Activation code</label>
+                {% if code != None and len(code) > 0 %}
+                    <input type="text" name="code" id="code"
+                        data-validator="required"
+                        data-validator-on="focus-loss" 
+                        value="{{ code }}" />
+                {% else %}
+                    <input type="text" name="code" id="code"
+                        data-validator="required"
+                        data-validator-on="focus-loss" />
+                {% end %}
+            </fieldset>
+            <fieldset>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password"
+                    data-validator="required password"
+                    data-validator-on="focus-loss" />
+            </fieldset>
+            <fieldset>
+                <label for="verify-password">Verify password</label>
+                <input type="password" name="verify-password" id="verify-password"
+                    data-validator="required password mirror"
+                    data-validator-on="focus-loss"
+                    data-validator-mirror="password" />
+            </fieldset>
+            {% if error == "not_valid" %}
+                <div class="message negative note">
+                    <span class="icon error">&nbsp;</span>The given activation code is not valid
+                </div>
+            {% elif error == "not_matching" %}
+                <div class="message negative note">
+                    <span class="icon error">&nbsp;</span>Passwords does not match
+                </div>
+            {% elif error != None %}
+                <div class="message negative note">
+                    <span class="icon error">&nbsp;</span>An error occured - could not activate your account!
+                </div>
+            {% end %}
+            <fieldset>
+                <button type="submit">Activate</button>
+            </fieldset>
+        </form>
+    </section>
+</div>
+{% end %}
+
+{% block post-main %}
+{% end %}
+
+{% block modals %}
+{% end %}

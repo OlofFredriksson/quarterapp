@@ -1,0 +1,58 @@
+{% extends "../resources/templates/view_base.html" %}
+
+{% block title %}
+Login
+{% end %}
+
+{% block pre-main %}
+<div class="container">
+</div>
+{% end %}
+
+{% block main %}
+<div class="container main">
+    <section class="content">
+        <form id="login-form" action="/login" method="POST" data-validation>
+            <fieldset>
+                <label for="username" class="">Username:</label>
+                {% if username %}
+                    <input type="text" name="username" id="username"
+                        data-validator="required email"
+                        data-validator-on="focus-loss"
+                        value="{{ username }}"/>
+                {% else %}
+                    <input type="text" name="username" id="username"
+                        data-validator="required email"
+                        data-validator-on="focus-loss" />
+                {% end %}
+            </fieldset>
+            <fieldset>
+                <label for="password" class="">Password:</label>
+                <input type="password" name="password" id="password"
+                    data-validator="required"
+                    data-validator-on="focus-loss" />
+            </fieldset>
+            {% if error == True %}
+                <div class="message negative note">
+                    <span class="icon error">&nbsp;</span>The given login is not valid!
+                </div>
+            {% end %}
+            <fieldset>
+                <button type="submit">Login</button>
+            </fieldset>
+        </form>
+        
+        {% if allow_signups == "1" %}
+            <p class="note">Do you want to <a href="/signup">signup</a> for a free account, or did you <a href="/forgot">forget</a> your login details?</a>
+        {% else %}
+            <p class="note">Did you <a href="/forgot">forget</a> your login details?</a>
+        {% end %}
+    </section>
+</div>
+{% end %}
+
+{% block post-main %}
+{% end %}
+
+{% block modals %}
+{% end %}

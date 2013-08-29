@@ -1,0 +1,52 @@
+ {% extends "../resources/templates/view_base.html" %}
+
+{% block title %}
+Signup
+{% end %}
+
+{% block pre-main %}
+<div class="container">
+</div>
+{% end %}
+
+{% block main %}
+<div class="container main">
+    <section class="content">
+        <p>Quarterapp is a free application, the only thing you need to do is enter your e-mail address and we will setup your account in no time.</p>
+        <form id="signup-form" action="/signup" method="POST" data-validation>
+            <fieldset>
+                <label for="email" class="">E-mail address</label>
+                {% if username != None and len(username) > 0 %}
+                    <input type="text" name="email" id="email"
+                        data-validator="required email"
+                        data-validator-on="focus-loss" 
+                        value="{{ username }}" />
+                {% else %}
+                    <input type="text" name="email" id="email"
+                        data-validator="required email"
+                        data-validator-on="focus-loss" />
+                {% end %}
+            </fieldset>
+
+            {% if error == "not_unique" %}
+                <div class="message negative note">
+                    <span class="icon error">&nbsp;</span>The given e-mail address is already in use
+                </div>
+            {% elif error != None %}
+                <div class="message negative note">
+                    <span class="icon error">&nbsp;</span>An error occured - could not sign you up!
+                </div>
+            {% end %}
+            <fieldset>
+                <button type="submit">Signup</button>
+            </fieldset>
+        </form>
+    </section>
+</div>
+{% end %}
+
+{% block post-main %}
+{% end %}
+
+{% block modals %}
+{% end %}

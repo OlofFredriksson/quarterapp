@@ -1,0 +1,86 @@
+{% extends "../resources/templates/wide_view_base.html" %}
+
+{% block title %}
+Generate report
+{% end %}
+
+{% block pre-main %}
+<div class="container">
+    <section class="instruction">
+        You can create a <span class="keyword">report</span> showing the time spent on <span class="keyword">activities</span> over a period of time.Which activities are limited byt the <span class="keyword">categories</span> you select to use.
+    </section>
+    <section class="instruction">
+        By default a report will detail the registered time <span class="keyword">per week</span> and <span class="keyword">per activity</span>.
+    </section>
+    <section class="instruction">
+        <form id="create-report" action="/application/report" method="GET" data-validation>
+
+            <input class="datepicker" type="text"
+                {% if from_date %}
+                    value="{{ from_date }}" 
+                {% end %}
+                name="from-date" placeholder="YYYY-MM-DD"
+                data-validator="required date"
+                data-validator-on="focus-loss" />
+            
+            <input class="datepicker" type="text"
+                {% if to_date %}
+                    value="{{ to_date }}" 
+                {% end %}
+                name="to-date" placeholder="YYYY-MM-DD"
+                data-validator="required date"
+                data-validator-on="focus-loss"/>
+            <button type="submit" class="button">Create report</button>
+        </form>
+    </section>
+</div>
+{% end %}
+
+{% block main %}
+<div class="container main">
+        {% if report and report.weeks %}
+            {% for week in report.weeks %}
+            <div class="container week">
+                <h3>Week {{ week.week_of_year() }}</h3>
+                <table class="week">
+                    <thead>
+                        <th class="activity"></th>
+                        <th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th><th>Total</th>
+                    </thead>
+                    <tbody>
+                        {% for activity in week.get_weeks_activities() %}
+                            <tr>
+                                <th>{{ activities[int(activity.id)].title }}</th>
+
+                                {% for timesheet in week %}
+                                    <td>{{ timesheet.time(activity.id) }}</td>
+                                {% end %}
+                                
+                                <td class="summary">{{ activity.amount }}</td>
+                            </tr>
+                        {% end %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total</th>
+                            {% for timesheet in week %}
+                                <td>{{ timesheet.total() }}</td>
+                            {% end %}
+                            <td class="summary">{{ week.total() }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            {% end %}
+        {% end %}
+    
+</div>
+{% end %}
+
+{% block post-main %}
+<div class="container">
+</div>
+{% end %}
+
+{% block modals %}
+{% end %}

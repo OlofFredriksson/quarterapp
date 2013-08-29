@@ -1,0 +1,63 @@
+{% extends "../resources/templates/view_base.html" %}
+
+{% block title %}
+User profile
+{% end %}
+
+{% block pre-main %}
+<div class="container">
+</div>
+{% end %}
+
+{% block main %}
+<div class="container main">
+    <section class="content">
+        <div class="profile-group">
+            <div class="profile-control">
+                <a href="/password" class="button">Change password</a>
+            </div>
+            <div class="profile-description">Change your password here</div>
+            <div class="clear-fix"></div>
+        </div>
+
+        <div class="profile-group">
+            <div class="profile-control">
+                <a href="#" class="button negative" onclick="javscript:$('#delete-account-form').show();">Delete account</a>
+            </div>
+            <div class="profile-description">
+                Delete your account and everything associated with it. <strong>This action cannot be undone!</strong>
+                {% if delete_account_error %}
+                <form id="delete-account-form" action="/delete-account" method="POST" data-validation>
+                {% else %}
+                <form id="delete-account-form" action="/delete-account" method="POST" style="display: none;" data-validation>
+                {% end %}
+                    <fieldset>
+                        <label for="verify-password">Password</label>
+                        <input type="password" name="password" id="password"
+                            data-validator="required password"
+                            data-validator-on="focus-loss" />
+                    </fieldset>        
+                    <fieldset>
+                        <button type="submit" class="button negative">Really delete account</button>
+                    </fieldset>
+                    {% if delete_account_error  %}
+                    <div class="message negative note">
+                        <span class="icon error">&nbsp;</span>The given password is not valid!
+                    </div>
+                    
+                    {% end %}
+                </form>
+            </div>
+            <div class="clear-fix"></div>
+        </div>
+    </section>
+</div>
+{% end %}
+
+{% block post-main %}
+
+{% end %}
+
+
+{% block modals %}
+{% end %}
