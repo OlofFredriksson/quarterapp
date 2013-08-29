@@ -17,4 +17,4 @@ lessc quarterapp/resources/static/styles/qa.compile.less > quarterapp/resources/
 cat quarterapp/resources/static/styles/quarterapp.css | cleancss -o quarterapp/resources/static/styles/quarterapp.min.css
 
 # Make the python distribution
-#python setup.py sdist
+python setup.py sdist

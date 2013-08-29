@@ -5,16 +5,17 @@ def get_resources():
     resources = []
     def assembler(arg, folder, files):
         if folder:
+            print folder
             resources.append(folder[len('quarterapp/'):] + '/*.*')
     os.path.walk('quarterapp/resources', assembler, True)
     return resources
 
 setup(
     name = 'quarterapp',
-    version = '2.0.0',
+    version = '2.0.1',
     author = 'Markus Eliasson',
     author_email = 'markus.eliasson@gmail.com',
-    packages = ['quarterapp', 'quarterapp.tests'],
+    packages = ['quarterapp', 'quarterapp.handlers', 'quarterapp.storage', 'quarterapp.tests'],
     url = 'https://github.com/eliasson/quarterapp2',
     license = "GPLv3 license",
     description = 'Personal time management',
