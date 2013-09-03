@@ -176,6 +176,9 @@
                 return;
             }
 
+            // Pain the current cell as well (covers a click with no movement)
+            this.paint_cell($(event.target));
+            
             var self = this,
                 $activities = $("table.sheet span.activity-cell.pending");
 
