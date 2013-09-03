@@ -352,12 +352,12 @@ class SheetApiHandler(JsonApiHandler, AuthenticatedHandler):
             for index in indexes_array:
                 quarters.append(Quarter(offset = index, activity_id = int(activity_id)))
 
-            self.application.storage.add_quarters_to_sheet(extract_date(date), quarters, user)
+            updated_quarters = self.application.storage.add_quarters_to_sheet(extract_date(date), quarters, user)
             
             time_sheet = self.application.storage.get_timesheet(extract_date(date), user)
             activity_dict = ActivityDict(self.application.storage.get_activities(user))
             summary, total = summarize_quarters(time_sheet.quarters, activity_dict)
-            self.send_json({ "summary" : summary, "total" : total })
+            self.send_json({ "summary" : summary, "total" : total , "quarters" : updated_quarters})
 
         except NotLoggedInError:
             self.send_json_error(ERROR_NOT_AUTHENTICATED)

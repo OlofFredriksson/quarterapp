@@ -504,6 +504,9 @@ class Storage(object):
             date: The time sheets date, must be in the format YYYY-MM-DD (or a datetime object)
             quarters: A list of quarters to add
             user: The current user
+
+        Returns:
+            The list of quarters added/removed/updated with the correct id and index
         """
         pass
 
