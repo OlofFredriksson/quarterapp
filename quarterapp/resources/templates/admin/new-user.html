@@ -9,26 +9,26 @@ Create new user
     <section class="content">
         <form id="login-form" action="/admin/user/new" method="POST" data-validation>
             <fieldset>
-                <label for="username">Username:</label>
+                <label for="username">E-mail address</label>
                 <input type="text" name="username" id="username" 
                     data-validator="required email"
                     data-validator-on="focus-loss"  />
             </fieldset>
             <fieldset>
-                <label for="password">Password:</label>
+                <label for="password">Password</label>
                 <input type="password" name="password" id="password"
                     data-validator="required password"
                     data-validator-on="focus-loss" />
             </fieldset>
             <fieldset>
-                <label for="verify-password">Verify password:</label>
+                <label for="verify-password">Verify password</label>
                 <input type="password" name="verify-password" id="verify-password"
                     data-validator="required password mirror"
                     data-validator-on="focus-loss"
                     data-validator-mirror="password" />
             </fieldset>
             <fieldset>
-                <label for="normal">Type of user:</label>
+                <label for="normal">Type of user</label>
                 <input type="radio" name="user-type" value="normal" checked />
                 <label for="normal">Normal</label>
 

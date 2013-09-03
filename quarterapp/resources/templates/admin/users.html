@@ -14,7 +14,7 @@ Users
 
         <form id="user-settings" action="/admin/users" method="POST">
             <fieldset>
-                <label for="filter">Username</label>
+                <label for="filter">Username / E-mail</label>
                 {% if query_filter %}
                     <input type="text" id="filter" name="filter" value="{{ query_filter }}" autofocus="autofocus" />
                 {% else %}
