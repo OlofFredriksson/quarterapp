@@ -427,6 +427,9 @@ footer.main a:hover {
 .icon.small {
   font-size: 18px;
 }
+.icon.tiny {
+  font-size: 13px;
+}
 .icon.edit:after {
   content: "\2699";
 }
