@@ -468,15 +468,15 @@ footer.main a:hover {
 }
 .icon.github:before {
   font-family: 'entypo-social';
-  content: "\F300";
+  content: "\e001";
 }
 .icon.twitter:before {
   font-family: 'entypo-social';
-  content: "\F309";
+  content: "\e000";
 }
 .icon.gplus:before {
   font-family: 'entypo-social';
-  content: "\F30F";
+  content: "\e003";
 }
 button,
 a.button {
@@ -972,6 +972,7 @@ input[readonly] {
 .container.current-date a:hover,
 .container.current-date a:active {
   color: #797d80;
+  margin-top: -7px;
 }
 .container.time-summary .content {
   padding: 8px 20px;
@@ -1179,6 +1180,9 @@ span.activity-cell.pending {
   to {
     background-position: -50px 0;
   }
+}
+span.activity-cell.pending > .icon.comment {
+  opacity: 0.4;
 }
 #create-report input {
   width: 202px;
