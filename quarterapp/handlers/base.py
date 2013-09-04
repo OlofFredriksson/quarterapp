@@ -19,7 +19,7 @@ import json
 import functools
 import logging
 import tornado.web
-
+from tornado.options import options
 from ..domain import NotLoggedInError, User
 
 ## Decorators used by handlers
@@ -135,4 +135,8 @@ class NoCacheHandler(tornado.web.RequestHandler):
         self.set_header('Expires', '0')
 
 class Http404Handler(BaseHandler):
-    pass
+    def get(self):
+        self.set_status(404)
+        self.render(u"../resources/templates/404.html",
+            path = self.request.path,
+            options = options)

@@ -1,0 +1,21 @@
+{% extends "../resources/templates/view_base.html" %}
+
+{% block title %}
+    404 File not found
+{% end %}
+
+{% block pre-main %}
+    &nbsp;
+{% end %}
+
+{% block main %}
+    <div class="container error">
+        <div class="content">
+            <div class="icon-box icon-box-huge icon-box-left">
+                <div class="huge icon crash">&nbsp;</div>
+            </div>
+            <h2>404 - File not found</h2>
+            <p>The page that you are looking for (<strong>{{ path }}</strong>) may have been moved or deleted.
+        </div>
+    </div>
+{% end %}
