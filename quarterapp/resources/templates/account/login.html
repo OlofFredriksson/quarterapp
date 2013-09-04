@@ -14,7 +14,7 @@ Login
     <section class="content">
         <form id="login-form" action="/login" method="POST" data-validation>
             <fieldset>
-                <label for="username" class="">Username:</label>
+                <label for="username" class="">E-mail address</label>
                 {% if username %}
                     <input type="text" name="username" id="username"
                         data-validator="required email"
@@ -27,7 +27,7 @@ Login
                 {% end %}
             </fieldset>
             <fieldset>
-                <label for="password" class="">Password:</label>
+                <label for="password" class="">Password</label>
                 <input type="password" name="password" id="password"
                     data-validator="required"
                     data-validator-on="focus-loss" />

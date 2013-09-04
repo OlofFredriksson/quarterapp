@@ -473,8 +473,7 @@ class DefaultStorage(Storage):
         except Exception, e:
             logging.error("Could not save quarter")
             logging.exception(e)
-            return False
-        return True
+        return quarter.id
 
     def _get_quarter(self, date, offset, user):
         quarter = None
@@ -511,11 +510,16 @@ class DefaultStorage(Storage):
                 self._add_quarter(date, quarter, user)
             elif quarter.activity_id == -1:
                 self._delete_quarter_by_offset(date, quarter.offset, user)
+                if existing_quarter != None:
+                    self._delete_comment_with_id(existing_quarter.comment_id, user)
             elif existing_quarter.activity_id != quarter.activity_id:
                 self._delete_quarter_by_offset(date, quarter.offset, user)
+                if existing_quarter != None:
+                    self._delete_comment_with_id(existing_quarter.comment_id, user)
                 self._add_quarter(date, quarter, user)
             elif existing_quarter.offset != quarter.offset:
                 self._add_quarter(date, quarter, user)
+        return quarters
 
 
     # Comments
@@ -548,4 +552,8 @@ class DefaultStorage(Storage):
     def delete_comment(self, quarter_id, user):
         quarter = self._get_quarter_from_id(quarter_id, user)
         self.execute("DELETE FROM comments WHERE id=? AND user=?;", quarter.comment_id, user.id)
+
+    def _delete_comment_with_id(self, comment_id, user):
+        logging.info("Erasing comment with id: %d" % comment_id)
+        self.execute("DELETE FROM comments WHERE id=? AND user=?;", comment_id, user.id)
 

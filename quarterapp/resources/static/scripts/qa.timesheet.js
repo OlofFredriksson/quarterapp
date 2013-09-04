@@ -176,6 +176,9 @@
                 return;
             }
 
+            // Pain the current cell as well (covers a click with no movement)
+            this.paint_cell($(event.target));
+            
             var self = this,
                 $activities = $("table.sheet span.activity-cell.pending");
 
@@ -195,6 +198,15 @@
                         "activity" : self.current_activity.id,
                     },
                     success : function(data, status, jqXHR) {
+                        // Update quarters with correct attributes
+                        $.each(data.quarters, function(index, quarter) {
+                            $("span.activity-cell[data-activity-index='" + quarter.offset + "']").attr("data-quarter-id", quarter.id);
+                            if(quarter.activity == -1) {
+                                $("span.activity-cell[data-activity-index='" + quarter.offset + "']").find("span.icon.comment").remove();
+                            }
+                        });
+
+                        // Update summary table
                         var summary_total = $("#summary-hours"),
                             summary_table = $("#sheet-summary");
                         summary_total.html(new Number(data.total).toFixed(2));
@@ -256,6 +268,7 @@
         on_comment_close : function() {
             event.preventDefault();
 
+            $("#comment").val("");
             this.$comment_modal.removeClass("show");
             this.$overlay.removeClass("show");
             this.$comment_modal.find("form").off("submit");
@@ -279,7 +292,9 @@
                     "comment" : comment
                 },
                 success : function(data, status, jqXHR) {
-                    // TODO: Update span with icon
+                    if(self.$comment_invoker.find("span.icon.comment").length == 0) {
+                        self.$comment_invoker.append('<span class="comment icon comment" style="color: ' + self.$comment_invoker.css("border-color") + ';">&nbsp;</span>');    
+                    }
                     self.on_comment_close();
                 },
                 error : function(jqXHR, status, errorThrown) {
