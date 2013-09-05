@@ -61,7 +61,7 @@
             return false;
         },
 
-        on_close : function() {
+        on_close : function(event) {
             event.preventDefault();
 
             this.$modal.removeClass("show");
