@@ -21,7 +21,9 @@
 
     function Timesheet(invoker, options) {
         this.options = $.extend({}, $.fn.category.defaults, options);
-        this.current_activity = { "id": -1, "color" : "#fff", "title" : "Idle"};
+        this.erase_activity = { "id": -1, "color" : "#fff", "title" : "Idle"};
+        this.current_activity = this.erase_activity;
+        this.prev_activity = this.erase_activity;
         this.summary_markup = '<tr data-activity-id="{0}" style="color: {1};"><td class="sheettime-value">{2}</td><td class="sheettime-name">{3}</td></tr>';
         this.pending_update = 0;
         this.current_date = undefined;
@@ -44,6 +46,7 @@
             $("#extend-eod").on("click", $.proxy(this.on_extend_eod, this));
 
             // Sheet marker event
+            $("table.sheet td").on("contextmenu", $.proxy(this.on_sheet_disable_context_menu, this));
             $("table.sheet td").bind("mousedown", $.proxy(this.on_sheet_mouse_down, this));
             $("table.sheet td").bind("mousemove", $.proxy(this.on_sheet_mouse_move, this));
             $("body").bind("mouseup", $.proxy(this.on_sheet_mouse_up, this));
@@ -121,6 +124,19 @@
 
             var activity = { "id": new_id, "color" : new_color, "title" : new_title };
             this.set_current_activity(activity);
+            this.set_prev_activity(this.erase_activity);
+        },
+
+        /**
+         * Disable the native context menu for when right click inside the sheet table. 
+         * The function will also set Erase as default activity and save the current activity as previous.
+         */
+        on_sheet_disable_context_menu : function(event) {
+            this.set_prev_activity(this.current_activity);
+            this.set_current_activity(this.erase_activity);
+
+            // Return false to disable native context menu
+            return false;
         },
 
         /**
@@ -128,7 +144,7 @@
          * mouse is relased and all updated activities are sent at once.
          */
         on_sheet_mouse_down : function(event) {
-            if(event.which !== 1) {
+            if(event.which !== 1 && event.which !== 3) {
                 return;
             }
 
@@ -141,7 +157,7 @@
          * and transmitted at mouse up.
          */
         on_sheet_mouse_move : function(event) {
-            if(event.which !== 1) {
+            if(event.which !== 1 && event.which !== 3) {
                 return;
             }
 
@@ -158,17 +174,22 @@
          * again.
          */
         on_sheet_mouse_up : function(event) {
-            function cleanup_pending_activities() {
+            function cleanup_pending_activities(self) {
                 var $activities = $("table.sheet span.activity-cell.pending");
                 // Remove any temporary attributes
                 $activities.removeAttr("data-activity-previous-id");
                 $activities.removeAttr("data-activity-previous-color");
 
+                //If the user is erasing activity by right click, we must update the current activity again
+                if(self.current_activity["id"] == -1 && self.prev_activity["id"] != -1) {
+                    self.set_current_activity(self.prev_activity);
+                }
+
                 // Remove all pending states
                 $activities.removeClass("pending");
             }
 
-            if(event.which !== 1) {
+            if(event.which !== 1 && event.which !== 3) {
                 return;
             }
 
@@ -222,7 +243,7 @@
                 });    
             }
 
-            cleanup_pending_activities();
+            cleanup_pending_activities(self);
             this.pending_update = 0;
         },
 
@@ -310,6 +331,10 @@
             $(".activity-list").find("[data-activity-id='" + activity.id + "']").find(".icon").addClass("current-activity");
             this.current_activity = activity;
             this.set_preferred_activity(activity);
+        },
+
+         set_prev_activity : function(activity) {
+            this.prev_activity = activity;
         },
 
         /**
