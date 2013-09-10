@@ -129,13 +129,8 @@
 
         /**
          * Disable the native context menu for when right click inside the sheet table. 
-         * The function will also set Erase as default activity and save the current activity as previous.
          */
         on_sheet_disable_context_menu : function(event) {
-            this.set_prev_activity(this.current_activity);
-            this.set_current_activity(this.erase_activity);
-
-            // Return false to disable native context menu
             return false;
         },
 
@@ -146,6 +141,13 @@
         on_sheet_mouse_down : function(event) {
             if(event.which !== 1 && event.which !== 3) {
                 return;
+            }
+
+            // If right click, we set Erase as current activity, and stores the previous value in a
+            // separate variable so we could use it when mouse_up is called.
+            if(event.which == 3) {
+                this.set_prev_activity(this.current_activity);
+                this.set_current_activity(this.erase_activity);
             }
 
             this.pending_update = event.timeStamp;
