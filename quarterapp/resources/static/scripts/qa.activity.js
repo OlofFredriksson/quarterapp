@@ -62,7 +62,6 @@
         },
 
         on_close : function(event) {
-            event.preventDefault();
 
             this.$modal.removeClass("show");
             this.$overlay.removeClass("show");
