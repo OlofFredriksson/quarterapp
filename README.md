@@ -61,6 +61,11 @@ Implement a class that derives from quarterapp.storage.Storage and register the 
 under the name 'quarterapp.storages'.
 
 
+# Contributors
+
+@OlofFredriksson - for fixing issues, early testing and reasoning about features and code.
+
+
 # License
 
 Copyright © 2013 Markus Eliasson
