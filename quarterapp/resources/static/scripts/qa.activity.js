@@ -61,8 +61,7 @@
             return false;
         },
 
-        on_close : function() {
-            event.preventDefault();
+        on_close : function(event) {
 
             this.$modal.removeClass("show");
             this.$overlay.removeClass("show");

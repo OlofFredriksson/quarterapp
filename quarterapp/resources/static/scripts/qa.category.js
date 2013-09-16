@@ -65,7 +65,7 @@
             return false;
         },
 
-        on_close : function() {         
+        on_close : function(event) {         
             this.$modal.removeClass("show");
             this.$overlay.removeClass("show");
             this.$modal.find("form").off("submit");
