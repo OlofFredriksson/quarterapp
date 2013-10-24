@@ -38,6 +38,32 @@ Generate report
 
 {% block main %}
 <div class="container main">
+        {% if report %}
+            <div class="container report-summary">
+                <h2 class="report-period">Summary</h2>
+                <div class="report-period">
+                    <span class="report-date">{{ from_date }}</span> to <span class="report-date">{{ to_date }}</span>
+                </div>
+                <div id="report-summary">
+                    <table class="report-summary">
+                        <tbody>
+                            {% for activity in report.total_activities %}
+                            <tr>
+                                <td class="report-summary-hours">{{ activity.amount }}</td>
+                                <td class="report-summary-name">{{ activities[int(activity.id)].title }}</td>
+                            </tr>
+                            {% end %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>{{ report.total_hours()}}</td>
+                                <td>hours</td>
+                            </tr>
+                       </tfoot>
+                    </table>
+                </div>
+            </div>
+        {% end %}
         {% if report and report.weeks %}
             {% for week in report.weeks %}
             <div class="container week">

@@ -112,14 +112,14 @@ class ReportViewHandler(BaseHandler, NoCacheHandler):
         for i in range(from_week, to_week + 1):
             year = from_date.year
 
-            if to_week < from_week: # Report from dec -> jan
+            if to_week < from_week:  # Report from dec -> jan
                 year = to_date.year
 
             week = Week(year, i)
             for day_time_sheet in week:
                 real_time_sheet = self.application.storage.get_timesheet(day_time_sheet.date, user)
                 week.update_sheet(real_time_sheet)
-            report.weeks.append(week)
+            report.add_week(week)
         return report
 
     @authenticated_user

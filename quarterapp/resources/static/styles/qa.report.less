@@ -53,29 +53,44 @@ table.week thead th.activity {
     text-align: left;
 }
 
-table.week tbody th {
-    //border-top: 1px solid #ccc;
-    //border-bottom: 1px solid #ccc;
-    //border-left: 1px solid #ccc;
-}
-
 table.week th,
 table.week td {
     padding: 3px 15px;
     text-align: center;
 }
 
-table.week tbody td {
-    //border-top: 1px solid #ccc;
-    //border-bottom: 1px solid #ccc;
-}
-
-table.week tbody tr td:nth-child(8) {
-    //border-right: 1px solid #ccc;   
-}
-
 table.week td.summary {
     border: none;
     font-style: oblique;
     background-color: #fff;
+}
+
+.report-title,
+.report-period {
+    text-align: center;
+}
+
+#report-summary {
+    text-align: center;
+}
+
+table.report-summary {
+    margin: 10px auto;
+}
+
+table.report-summary tfoot tr {
+    border-top: 1px solid #ccc;
+    font-weight: bold;
+}
+
+.report-summary-hours {
+    padding: 4px 8px;
+}
+
+.report-summary-name {
+    padding: 4px 8px;
+}
+
+.report-date {
+    font-style: oblique;
 }

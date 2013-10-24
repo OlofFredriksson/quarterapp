@@ -348,6 +348,9 @@ class ActivitySummary(object):
         self.id = id
         self.amount = amount
 
+    def __str__(self):
+        return "activity_id=%d amount=%d" % (self.id, self.amount)
+
 
 class TimeSheet(object):
     """
@@ -459,12 +462,13 @@ class Week(object):
         self._setup_empty_sheets()
 
     def _setup_empty_sheets(self):
-        first_day = self._week_start_date(self.year, self.week)
+        first_day = Week._week_start_date(self.year, self.week)
         for i in range(7):
-            delta = timedelta(days = i)
-            self.sheets.append(TimeSheet(date = first_day  + delta))
+            delta = timedelta(days=i)
+            self.sheets.append(TimeSheet(date=first_day + delta))
 
-    def _week_start_date(self, year, week):
+    @staticmethod
+    def _week_start_date(year, week):
         # From SO http://stackoverflow.com/a/1287862
         d = date(year, 1, 1)    
         delta_days = d.isoweekday() - 1
@@ -505,25 +509,11 @@ class Week(object):
         activities amount is summed up
         """
         all_activities = []
-        unique_activities = []
         for sheet in self.sheets:
             all_activities += sheet.summary
 
-        # Filter out any duplicates and merge the amount of time spent
-        for aa in all_activities:
-            matches = list((ua for ua in unique_activities if ua.id == aa.id))
-            if len(matches) > 0:
-                # Item already exist in list of unique activities
-                # Mutable data, yay!
-                updated_activity = ActivitySummary(aa.id, aa.amount + matches[0].amount)
-                
-                unique_activities.remove(matches[0])
-                unique_activities.append(updated_activity)
-            else:
-                unique_activities.append(aa)
-
-        # Sort on id
-        unique_activities.sort(key = lambda x: int(x.id))
+        unique_activities = _merge_activity_summaries(all_activities)
+        unique_activities.sort(key=lambda x: int(x.id))
         return unique_activities
 
     # Iteration support
@@ -533,7 +523,6 @@ class Week(object):
     def next(self):
         return self.sheets.next()
 
-    # String representation
     def __str__(self):
         desc = "Week: %d\n" % self.week
         desc += "Sheets: \n"
@@ -547,4 +536,49 @@ class Week(object):
 class Report(object):
     def __init__(self):
         self.weeks = []
+        self.total_activities = []
 
+    def add_week(self, week):
+        """
+        Add a new week to this report and update the total summary.
+
+        Args:
+            week: The Week object to add
+        """
+        self.weeks.append(week)
+        week_activities = week.get_weeks_activities()
+        activities = self.total_activities + week_activities
+        self.total_activities = _merge_activity_summaries(activities)
+        self.total_activities.sort(key=lambda x: int(x.id))
+
+    def total_hours(self):
+        """Calculate the total number of hours"""
+        acc = 0
+        for a in self.total_activities:
+            acc += a.amount
+        return acc
+
+
+def _merge_activity_summaries(activities):
+    """
+    Filter any duplicate activities and merge the amount of time spent.
+
+    Args:
+        A list of ActivitySummary objects
+
+    Returns:
+        A list of unique ActivitySummary objects
+    """
+    unique_activities = []
+    for aa in activities:
+        matches = list((ua for ua in unique_activities if ua.id == aa.id))
+        if len(matches) > 0:
+            # Item already exist in list of unique activities
+            # Mutable data, yay!
+            updated_activity = ActivitySummary(aa.id, aa.amount + matches[0].amount)
+
+            unique_activities.remove(matches[0])
+            unique_activities.append(updated_activity)
+        else:
+            unique_activities.append(aa)
+    return unique_activities
