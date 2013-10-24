@@ -14,6 +14,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
 class HandlerPlugin(object):
     """
     A handler plugin represents a single RequestHandler mounted under
@@ -30,6 +31,7 @@ class HandlerPlugin(object):
         """
         self.path = path
         self.handler = handler
+
 
 class ViewPlugin(object):
     """
@@ -52,9 +54,10 @@ class ViewPlugin(object):
         self.handler = handler
         self.name = name
 
+
 class StoragePlugin(object):
     """
-    Used to impements an alternative storage module to the SQLite included in quarterapp.
+    Used to implements an alternative storage module to the SQLite included in quarterapp.
 
     To activate a storage plugin (there can only be one active storage plugin) the name
     of the plugin has to be entered as value for the setting "storage" in quarterapp.conf

@@ -1,8 +1,10 @@
 from setuptools import setup
 import os.path
 
+
 def get_resources():
     resources = []
+
     def assembler(arg, folder, files):
         if folder:
             print folder

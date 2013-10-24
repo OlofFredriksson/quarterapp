@@ -23,6 +23,7 @@ import os
 import re
 from collections import Counter
 
+
 def generate_pagination(total, current, max_per_page, max_links, query_filter = None):
     """
     Generate a list of pagination links based on the following input.
@@ -50,7 +51,7 @@ def generate_pagination(total, current, max_per_page, max_links, query_filter = 
         else:
             total_pages = int(total) / int(max_per_page)
             if int(total) % int(max_per_page) != 0:
-                total_pages = total_pages + 1 
+                total_pages += 1
         
         if int(current) < int(max_per_page):
             current_page = 0
@@ -68,13 +69,13 @@ def generate_pagination(total, current, max_per_page, max_links, query_filter = 
 
             current_page = int(start) <= int(current) < (int(start) + int(max_per_page))
             
-            p = { 'index' : i, 'link' : link, 'current' : current_page }
+            p = {'index': i, 'link': link, 'current': current_page}
             pagination.append(p)
-
     except:
         logging.warn("Could not generate the users pagination: %s", sys.exc_info())
 
     return pagination
+
 
 def hash_password(password, salt):
     """
@@ -91,6 +92,7 @@ def hash_password(password, salt):
     sha.update(password + salt)
     return base64.urlsafe_b64encode(sha.digest())
 
+
 def valid_date(date):
     """
     Check if the given string is a valid date format YYYY-MM-DD
@@ -98,11 +100,12 @@ def valid_date(date):
     @param date The date in string format
     @return True if the date string is correctly formatted, else False
     """
-    return extract_date(date) != None
+    return extract_date(date) is not None
+
 
 def extract_date(date):
     """
-    Extrac a date object based on the given date string, the string must be formatted
+    Extract a date object based on the given date string, the string must be formatted
     YYYY-MM-DD else None will be returned.
 
     @param date The date in string format
@@ -121,6 +124,7 @@ def extract_date(date):
     except Exception, e:
         logging.exception(e)
         return None
+
 
 def summarize_quarters(quarters, activity_dict):
     # Convert the list of quarters to a list of only activity_id
@@ -142,9 +146,10 @@ def summarize_quarters(quarters, activity_dict):
 
         activity_summary = float(summary_dict[activity_id] / 4.0)
         summary_total += activity_summary
-        summary_list.append({ "id" : activity_id, "color" : activity_color,
-            "title" : activity_title, "sum" : "%.2f" % activity_summary})
+        summary_list.append({"id": activity_id, "color": activity_color,
+                             "title": activity_title, "sum": "%.2f" % activity_summary})
     return summary_list, "%.2f" % summary_total
+
 
 def activation_code():
     """

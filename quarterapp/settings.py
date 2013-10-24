@@ -15,7 +15,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import storage
+
 
 class QuarterSettings(object):
     """
@@ -31,7 +31,8 @@ class QuarterSettings(object):
         Constructs the application settings and try to update the settings
         from database
 
-        @param storage The storage implementation used to access the database
+        Args:
+            storage: The storage implementation used to access the database
         """
         self.storage = storage
         self.settings = {}
@@ -53,10 +54,12 @@ class QuarterSettings(object):
 
     def get_value(self, key):
         """
-        Get the setting value for the given key, if no setting exist for this key
-        None is returned
+        Get the setting value for the given key.key
+
+        Returns:
+            The key value or None
         """
-        if self.settings.has_key(key):
+        if key in self.settings:
             return self.settings[key]
         else:
             return None
@@ -67,8 +70,9 @@ class QuarterSettings(object):
         this function will not insert the value. I.e. this function will only update
         existing values.
 
-        @param key The settings key to update value for
-        @param value The new value
+        Args:
+            key: The settings key to update value for
+            value: The new value
         """
         if self.settings.has_key(key):
             self.storage.put_setting(key, value)

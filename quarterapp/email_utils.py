@@ -58,6 +58,7 @@ Cheers!
 
 """)
 
+
 def send_mail(username, message):
     try:
         server = smtplib.SMTP(options.mail_host)
@@ -71,10 +72,12 @@ def send_mail(username, message):
             
         server.sendmail(options.mail_sender, username, message)
         return True
-    except:
-        logging.warn("Could not send email: %s", sys.exc_info())
+    except Exception, e:
+        logging.warn("Could not send email")
+        logging.exception(e)
         logging.warn(message)
         return True
+
 
 def send_signup_email(username, code):
     """
@@ -85,16 +88,18 @@ def send_signup_email(username, code):
     @return True if mail could be sent, else False
     """
     try:
-        message = signup_email_template.generate(subject = "Welcome to quarterapp",
-                    email_from = options.mail_sender,
-                    email_to = username,
-                    code_link = "http://" + options.base_url + "/activate/" + code,
-                    link = "http://" + options.base_url + "/activate",
-                    code = code)
+        message = signup_email_template.generate(subject="Welcome to quarterapp",
+                                                 email_from=options.mail_sender,
+                                                 email_to=username,
+                                                 code_link="http://" + options.base_url + "/activate/" + code,
+                                                 link="http://" + options.base_url + "/activate",
+                                                 code=code)
         return send_mail(username, message)
-    except:
-        logging.warn("Could not send signup email: %s", sys.exc_info())
+    except Exception, e:
+        logging.warn("Could not send signup email")
+        logging.exception(e)
         return False
+
 
 def send_reset_email(username, code):
     """
@@ -104,12 +109,12 @@ def send_reset_email(username, code):
     @return True if mail could be sent, else False
     """
     try:
-        message = reset_email_template.generate(subject = "Reset your password",
-                    email_from = options.mail_sender,
-                    email_to = username,
-                    code_link = "http://" + options.base_url + "/reset/" + code,
-                    link = "http://" + options.base_url + "/reset",
-                    code = code)
+        message = reset_email_template.generate(subject="Reset your password",
+                                                email_from=options.mail_sender,
+                                                email_to=username,
+                                                code_link="http://" + options.base_url + "/reset/" + code,
+                                                link="http://" + options.base_url + "/reset",
+                                                code=code)
         return send_mail(username, message)
     except Exception, e:
         logging.error("Could not send reset email!")

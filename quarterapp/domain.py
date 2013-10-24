@@ -21,6 +21,7 @@ from datetime import date, timedelta, datetime
 from collections import Counter
 from utils import *
 
+
 class BaseError(Exception):
     """
     Base exception for quarterapp, all other exceptions should derive
@@ -29,26 +30,32 @@ class BaseError(Exception):
     def __init__(self, message):
         self.message = message
 
+
 class InvalidColorError(BaseError):
     pass
+
 
 class RangeTooBigError(BaseError):
     pass
 
+
 class InvalidRangeStartError(BaseError):
     pass
+
 
 class InvalidRangeLengthError(BaseError):
     pass
 
+
 class NotLoggedInError(BaseError):
     pass
+
 
 class Color(object):
     """
     Represents a CSS color but only supports HEX format
     """
-    # Precompile regular expression
+    # Pre-compile regular expression
     color_hex_match_re = re.compile(r"^(#)([0-9a-fA-F]{3})([0-9a-fA-F]{3})?$")
 
     """
@@ -100,6 +107,7 @@ class Color(object):
     def __str__(self):
         return self.hex_value
 
+
 class UserType(object):
     """
     Represents the different type of users QuarteraApp has, a user can
@@ -109,9 +117,9 @@ class UserType(object):
     Administrator = 1
     # Beta users (this should be removed once not needed)
     Beta = 2
-    # Normal users can use the webaplication
+    # Normal users can use the web application
     Normal = 3
-    # Preimum users can use the webapplication and the HTTP API (ios / android apps)
+    # Premium users can use the web application and the HTTP API (ios / android apps)
     Premium = 4
 
     @classmethod
@@ -120,6 +128,7 @@ class UserType(object):
         if user_type == "admin":
             ut = UserType.Administrator
         return ut
+
 
 class UserState(object):
     """
@@ -140,6 +149,7 @@ class UserState(object):
         elif state == "disabled":
             us = UserState.Disabled
         return us
+
 
 class User(object):
     """
@@ -176,6 +186,7 @@ class User(object):
     def __str__(self):
         return "ID: %s Username: %s Type: %s State: %s" % (self.id, self.username, self.type, self.state)
 
+
 class Activity(object):
     """
     An activity is used to mark the time (quarters) during a day. In the
@@ -185,10 +196,10 @@ class Activity(object):
     """
     # Activity is enabled, this it can be used in a timesheet
     Enabled = 1
-    # Actiivity is disabled, it cannot be used in new timesheets, but accessible for reports
+    # Activity is disabled, it cannot be used in new timesheets, but accessible for reports
     Disabled = 0
 
-    def __init__(self, id = -1, color = Color("#fff"), title = "Untitled", state = Enabled, meta = "", category_id = -1):
+    def __init__(self, id=-1, color=Color("#fff"), title="Untitled", state=Enabled, meta="", category_id=-1):
         self.id = id
         self.color = color
         self.title = title
@@ -233,6 +244,7 @@ class Activity(object):
         """
         return self.meta
 
+
 class ActivityDict(dict):
     """
     Creats a dictionary containing Activity objects using the id as key
@@ -240,6 +252,7 @@ class ActivityDict(dict):
     def __init__(self, activity_list):
         for activity in activity_list:
             self[activity.id] = activity
+
 
 class Category(object):
     """
@@ -258,6 +271,7 @@ class Category(object):
 
     def is_empty(self):
         return self.empty
+
 
 class TimeRange(object):
     """
@@ -309,17 +323,17 @@ class TimeRange(object):
             logging.info("Adjusting timeranges:\n\t%s\n\t%s" % (self, other_range))
             logging.info("Adjusting time range starting at %d from length %d to %d" % (self.start, self.length, (other_range.start - self.start)))
             self.length = other_range.start - self.start
-            logging.info("Result: %s" %(self))
+            logging.info("Result: %s" % (self,))
 
     def merge(self, other_range):
         """
         Merge the two ranges together, resulting in that the other range will have a
         length of zero once this method returns
         """
-        logging.info("Merging timeranges:\n\t%s\n\t%s" % (self, other_range))
+        logging.info("Merging time ranges:\n\t%s\n\t%s" % (self, other_range))
         self.length = self.length + other_range.length
         other_range.length = 0
-        logging.info("Resulting timerange: %s" %(self))
+        logging.info("Resulting time range: %s" % (self,))
 
     def ends(self):
         return self.start + self.length
@@ -327,11 +341,13 @@ class TimeRange(object):
     def __str__(self):
         return "id = %d start=%d length=%d activity=%d" % (self.id, self.start, self.length, self.activity_id)
 
+
 class ActivitySummary(object):
     """Used to the summarized amount of time spent on a activity"""
     def __init__(self, id=id, amount=0.0):
         self.id = id
         self.amount = amount
+
 
 class TimeSheet(object):
     """
@@ -397,6 +413,7 @@ class TimeSheet(object):
     def __str__(self):
         return "date = %s total = %d quarters = %s" % (self.date, self.total(), self.quarters)
 
+
 class Quarter(object):
     """
     Represents a single quarter
@@ -420,6 +437,7 @@ class Quarter(object):
     def __str__(self):
         return "id=%d offset=%s comment_id=%s color=%s" % (self.id, self.offset, self.comment_id, self.color)
 
+
 class Comment(object):
     def __init__(self, id = -1, comment = ""):
         self.id = id
@@ -427,6 +445,7 @@ class Comment(object):
 
     def __str__(self):
         return "id = %d comment = '%s'" % (self.id, self.comment)
+
 
 class Week(object):
     """
@@ -483,7 +502,7 @@ class Week(object):
     def get_weeks_activities(self):
         """
         Get a sorted unique list of all the weeks activities where the
-        activities amount is sumed up
+        activities amount is summed up
         """
         all_activities = []
         unique_activities = []
@@ -524,7 +543,8 @@ class Week(object):
                 desc += "\t\t %s: %s\n" % (act.id, act.amount)
         return desc
 
+
 class Report(object):
     def __init__(self):
         self.weeks = []
-        
+
