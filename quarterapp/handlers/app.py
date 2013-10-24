@@ -14,11 +14,11 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import tornado.web, datetime
-from ..utils import *
+import datetime
 from tornado.options import options
-from base import BaseHandler, AuthenticatedHandler, NoCacheHandler, authenticated_user, User, authenticated_admin
-from ..domain import Color, ActivityDict, Category, Quarter, Week, Report
+from base import BaseHandler, AuthenticatedHandler, NoCacheHandler, authenticated_user
+from ..domain import Color, ActivityDict, Quarter, Week, Report
+from ..utils import *
 
 
 class ActivityViewHandler(AuthenticatedHandler, NoCacheHandler):
