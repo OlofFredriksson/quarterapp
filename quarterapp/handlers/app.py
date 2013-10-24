@@ -20,9 +20,10 @@ from tornado.options import options
 from base import BaseHandler, AuthenticatedHandler, NoCacheHandler, authenticated_user, User, authenticated_admin
 from ..domain import Color, ActivityDict, Category, Quarter, Week, Report
 
+
 class ActivityViewHandler(AuthenticatedHandler, NoCacheHandler):
     """
-    The handler resposible for render the activity view (where also 
+    The handler responsible for render the activity view (where also
     categories are managed).
     """
     @authenticated_user
@@ -31,24 +32,26 @@ class ActivityViewHandler(AuthenticatedHandler, NoCacheHandler):
         categories = self.application.storage.get_categories_and_activities_with_usage(user)
         
         self.render(u"../resources/templates/app/activities.html",
-            options = options,
-            current_user = self.get_current_user(),
-            categories = categories)
+                    options=options,
+                    current_user=self.get_current_user(),
+                    categories=categories)
+
 
 class TimesheetViewHandler(AuthenticatedHandler, NoCacheHandler):
     """
     Responsible for render a timesheet, the summary and the list of
     available activities.
     """
-    
-    def _default_sheet(self):
+
+    @staticmethod
+    def _default_sheet():
         quarters = []
         for i in range(0, 96):
             quarters.append(Quarter())
         return quarters
 
-    def _get_list_of_quarters(self, date, activity_dict, user):        
-        quarters = self._default_sheet()
+    def _get_list_of_quarters(self, date, activity_dict, user):
+        quarters = TimesheetViewHandler._default_sheet()
         time_sheet = self.application.storage.get_timesheet(date, user)
         for quarter in time_sheet.quarters:
             quarter.color = Color(activity_dict[int(quarter.activity_id)].color.hex())
@@ -58,7 +61,7 @@ class TimesheetViewHandler(AuthenticatedHandler, NoCacheHandler):
         return quarters
 
     @authenticated_user
-    def get(self, sheet_date = None):
+    def get(self, sheet_date=None):
         user = self.get_current_user()
 
         date_obj = None
@@ -71,8 +74,8 @@ class TimesheetViewHandler(AuthenticatedHandler, NoCacheHandler):
             date_obj = today
             sheet_date = today 
 
-        yesterday = date_obj - datetime.timedelta(days = 1)
-        tomorrow = date_obj + datetime.timedelta(days = 1)
+        yesterday = date_obj - datetime.timedelta(days=1)
+        tomorrow = date_obj + datetime.timedelta(days=1)
         weekday = date_obj.strftime("%A")
 
         categories_and_activities = self.application.storage.get_categories_and_activities(user)
@@ -83,17 +86,18 @@ class TimesheetViewHandler(AuthenticatedHandler, NoCacheHandler):
         summary, summary_total = summarize_quarters(quarters, activity_dict)
 
         self.render(u"../resources/templates/app/timesheet.html",
-            options = options,
-            current_user = self.get_current_user(),
-            date = date_obj,
-            weekday = weekday,
-            today = today,
-            yesterday = yesterday,
-            tomorrow = tomorrow,
-            summary = summary,
-            summary_total = summary_total,
-            categories_and_activities = categories_and_activities,
-            quarters = quarters)
+                    options=options,
+                    current_user=self.get_current_user(),
+                    date=date_obj,
+                    weekday=weekday,
+                    today=today,
+                    yesterday=yesterday,
+                    tomorrow=tomorrow,
+                    summary=summary,
+                    summary_total=summary_total,
+                    categories_and_activities=categories_and_activities,
+                    quarters=quarters)
+
 
 class ReportViewHandler(BaseHandler, NoCacheHandler):
     """
@@ -136,13 +140,14 @@ class ReportViewHandler(BaseHandler, NoCacheHandler):
                 error = True
                 
         self.render(u"../resources/templates/app/reports.html",
-                options = options,
-                current_user = self.get_current_user(),
-                from_date = from_date,
-                to_date = to_date,
-                activities = activity_dict,
-                error = error,
-                report = report)
+                    options=options,
+                    current_user=self.get_current_user(),
+                    from_date=from_date,
+                    to_date=to_date,
+                    activities=activity_dict,
+                    error=error,
+                    report=report)
+
 
 class ProfileViewHandler(BaseHandler):
     """
@@ -151,8 +156,7 @@ class ProfileViewHandler(BaseHandler):
 
     @authenticated_user
     def get(self):
-        user = self.get_current_user()
         self.render(u"../resources/templates/app/profile.html",
-            options = options,
-            current_user = self.get_current_user(),
-            delete_account_error = None)
+                    options=options,
+                    current_user=self.get_current_user(),
+                    delete_account_error=None)
