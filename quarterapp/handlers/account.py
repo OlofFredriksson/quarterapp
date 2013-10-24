@@ -17,31 +17,29 @@
 import tornado.web
 
 from tornado.options import options
-from base import BaseHandler, AuthenticatedHandler, authenticated_user, authenticated_admin
-from ..domain import BaseError, User, UserType, UserState
+from base import BaseHandler, AuthenticatedHandler, authenticated_user
 from ..utils import *
 from ..email_utils import *
 
+
 class LoginViewHandler(AuthenticatedHandler):
     """
-    The handler resposible for login
+    The handler responsible for login
     """
     def get(self):
         self.render(u"../resources/templates/account/login.html",
-            options = options,
-            current_user = self.get_current_user(),
-            error = False,
-            username = None,
-            allow_signups = False)
+                    options=options,
+                    current_user=self.get_current_user(),
+                    error=False,
+                    username=None,
+                    allow_signups=False)
 
     def post(self):
-        user = self.get_current_user()
         username = self.get_argument("username", "")
         password = self.get_argument("password", "")
 
         hashed_password = hash_password(password, username)
         user = self.application.storage.get_user_by_username(username)
-        error = None
 
         if user and user.password == hashed_password:
             # TODO This should check if active or not
@@ -51,30 +49,31 @@ class LoginViewHandler(AuthenticatedHandler):
         else:
             logging.info("User not authenticated")
             self.set_current_user(None)
-            error = True
             self.render(u"../resources/templates/account/login.html",
-                options = options,
-                current_user = self.get_current_user(),
-                error = error,
-                username = username,
-                allow_signups = False)
+                        options=options,
+                        current_user=self.get_current_user(),
+                        error=True,
+                        username=username,
+                        allow_signups=False)
+
 
 class LogoutViewHandler(BaseHandler):
     """
-    The handler resposible for login
+    The handler responsible for login
     """
     def get(self):
         self.clear_cookie("user")
-        self.redirect(u"/") # TODO Make this configurable
+        self.redirect(u"/")  # TODO Make this configurable
+
 
 class ChangePasswordHandler(AuthenticatedHandler):
     @authenticated_user
     def get(self):
         self.render(u"../resources/templates/account/change_password.html",
-            options = options,
-            current_user = self.get_current_user(),
-            error = False,
-            done = False)
+                    options=options,
+                    current_user=self.get_current_user(),
+                    error=False,
+                    done=False)
 
     @authenticated_user
     def post(self):
@@ -102,10 +101,11 @@ class ChangePasswordHandler(AuthenticatedHandler):
             done = True
         
         self.render(u"../resources/templates/account/change_password.html",
-            options = options,
-            current_user = self.get_current_user(),
-            error = error,
-            done = done)
+                    options=options,
+                    current_user=self.get_current_user(),
+                    error=error,
+                    done=done)
+
 
 class DeleteAccountHandler(AuthenticatedHandler):
     @authenticated_user
@@ -125,21 +125,22 @@ class DeleteAccountHandler(AuthenticatedHandler):
         if error:
             logging.error("Could not delete account")
             self.render(u"../resources/templates/app/profile.html",
-                options = options,
-                current_user = self.get_current_user(),
-                delete_account_error = True)
+                        options=options,
+                        current_user=self.get_current_user(),
+                        delete_account_error=True)
         else:
             self.application.storage.delete_user(user)
             self.set_current_user(None)
             self.redirect(u"/")
 
+
 class ForgotPasswordHandler(BaseHandler):
     def get(self):
         self.render(u"../resources/templates/account/forgot.html",
-            options = options,
-            current_user = self.get_current_user(),
-            error = None,
-            username = None)
+                    options=options,
+                    current_user=self.get_current_user(),
+                    error=None,
+                    username=None)
 
     def post(self):
         username = self.get_argument("username", "")
@@ -155,10 +156,11 @@ class ForgotPasswordHandler(BaseHandler):
                 error = True
         if error:
             self.render(u"../resources/templates/account/forgot.html",
-                options = options,
-                current_user = self.get_current_user(),
-                error = True,
-                username = username)
+                        options=options,
+                        current_user=self.get_current_user(),
+                        error=True,
+                        username=username)
+
 
 class ResetPasswordHandler(BaseHandler):
     def get(self, code_parameter = None):
@@ -167,10 +169,10 @@ class ResetPasswordHandler(BaseHandler):
             code = code_parameter
 
         self.render(u"../resources/templates/account/reset.html",
-            options = options,
-            current_user = self.get_current_user(),
-            error = None,
-            code = code)
+                    options=options,
+                    current_user=self.get_current_user(),
+                    error=None,
+                    code=code)
 
     def post(self):
         code = self.get_argument("code", "")
@@ -195,19 +197,20 @@ class ResetPasswordHandler(BaseHandler):
 
         if error:
             self.render(u"../resources/templates/account/reset.html",
-                options = options,
-                current_user = self.get_current_user(),
-                error = True,
-                code = code)
+                        options=options,
+                        current_user=self.get_current_user(),
+                        error=True,
+                        code=code)
+
 
 class SignupHandler(BaseHandler):
     def get(self):
         if self.enabled("allow-signups"):
             self.render(u"../resources/templates/account/signup.html",
-                options = options,
-                current_user = self.get_current_user(),
-                error = None,
-                username = "")
+                        options=options,
+                        current_user=self.get_current_user(),
+                        error=None,
+                        username="")
         else:
             raise tornado.web.HTTPError(404)
 
@@ -229,8 +232,8 @@ class SignupHandler(BaseHandler):
                 if send_signup_email(username, code):
                     self.application.storage.signup_user(username, code, self.request.remote_ip)
                     self.render(u"../resources/templates/account/signup_instructions.html",
-                        options = options,
-                        current_user = self.get_current_user())
+                                options=options,
+                                current_user=self.get_current_user())
                     return
                 else:
                     error = True
@@ -240,10 +243,11 @@ class SignupHandler(BaseHandler):
                 error = True
         
         self.render(u"../resources/templates/account/signup.html",
-            options = options,
-            current_user = self.get_current_user(),
-            error = error,
-            username = username)
+                    options=options,
+                    current_user=self.get_current_user(),
+                    error=error,
+                    username=username)
+
 
 class ActivationHandler(BaseHandler):
     def get(self, code_parameter = None):
@@ -253,10 +257,10 @@ class ActivationHandler(BaseHandler):
         
         if self.enabled("allow-activations"):
             self.render(u"../resources/templates/account/activate.html",
-                options = options,
-                current_user = self.get_current_user(),
-                error = None,
-                code = code)
+                        options=options,
+                        current_user=self.get_current_user(),
+                        error=None,
+                        code=code)
         else:
             raise tornado.web.HTTPError(404)
 
@@ -282,7 +286,7 @@ class ActivationHandler(BaseHandler):
                 return
 
         self.render(u"../resources/templates/account/activate.html",
-            options = options,
-            current_user = self.get_current_user(),
-            error = error,
-            code = code)
+                    options=options,
+                    current_user=self.get_current_user(),
+                    error=error,
+                    code=code)
