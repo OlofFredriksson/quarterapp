@@ -14,15 +14,12 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 import json
 import functools
-import logging
 import tornado.web
 from tornado.options import options
 from ..domain import NotLoggedInError, User
 
-## Decorators used by handlers
 
 def authenticated_user(method):
     """
@@ -40,6 +37,7 @@ def authenticated_user(method):
         return method(self, *args, **kwargs)
     return wrapper
 
+
 def authenticated_admin(method):
     """
     Decorate methods with this to require that user is admin.
@@ -54,7 +52,6 @@ def authenticated_admin(method):
         return method(self, *args, **kwargs)
     return wrapper
 
-## Handlers
 
 class QuarterUserEncoder(json.JSONEncoder):
     """
@@ -62,7 +59,8 @@ class QuarterUserEncoder(json.JSONEncoder):
     """
     def default(self, obj):
         if isinstance(obj, User):
-            return { "id" : obj.id, "username" : obj.username, "password" : obj.password, "last_login" : obj.last_login, "type" : obj.type, "state" : obj.state }
+            return {"id": obj.id, "username": obj.username, "password": obj.password, "last_login": obj.last_login, "type": obj.type, "state": obj.state}
+
 
 class QuarterUserDecoder(json.JSONDecoder):
     """
@@ -70,9 +68,10 @@ class QuarterUserDecoder(json.JSONDecoder):
     """
     def decode(self, user_string):
         user_json = json.loads(user_string)
-        user  = User(id = user_json["id"], username = user_json["username"], password = user_json["password"],
-            last_login = user_json["last_login"], type = user_json["type"], state = user_json["state"])
+        user = User(id=user_json["id"], username=user_json["username"], password=user_json["password"],
+                    last_login=user_json["last_login"], type=user_json["type"], state=user_json["state"])
         return user
+
 
 class BaseHandler(tornado.web.RequestHandler):
     """
@@ -115,6 +114,7 @@ class BaseHandler(tornado.web.RequestHandler):
         """
         return self.application.quarter_settings.get_value(setting) == "1"
 
+
 class AuthenticatedHandler(BaseHandler):
     """
     Base class for any handler that needs user to be authenticated
@@ -129,14 +129,16 @@ class AuthenticatedHandler(BaseHandler):
             raise NotLoggedInError("Unauthorized")
         return user
 
+
 class NoCacheHandler(tornado.web.RequestHandler):
     def set_extra_headers(self, path):
         self.set_header('Cache-Control', 'no-cache, must-revalidate')
         self.set_header('Expires', '0')
 
+
 class Http404Handler(BaseHandler):
     def get(self):
         self.set_status(404)
         self.render(u"../resources/templates/404.html",
-            path = self.request.path,
-            options = options)
+                    path=self.request.path,
+                    options=options)
