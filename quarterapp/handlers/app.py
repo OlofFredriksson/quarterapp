@@ -149,6 +149,57 @@ class ReportViewHandler(BaseHandler, NoCacheHandler):
                     report=report)
 
 
+class StatisticsViewHandler(BaseHandler, NoCacheHandler):
+    """
+    Responsible for showing the different reports
+    """
+    def _generate_report(self, from_date, to_date, user):
+        logging.info("Generating report between dates %s and %s" % (from_date, to_date))
+
+        report = Report()
+        from_week = from_date.isocalendar()[1]
+        to_week = to_date.isocalendar()[1]
+        for i in range(from_week, to_week + 1):
+            year = from_date.year
+
+            if to_week < from_week:  # Report from dec -> jan
+                year = to_date.year
+
+            week = Week(year, i)
+            for day_time_sheet in week:
+                real_time_sheet = self.application.storage.get_timesheet(day_time_sheet.date, user)
+                week.update_sheet(real_time_sheet)
+            report.add_week(week)
+        return report
+
+    @authenticated_user
+    def get(self):
+        user = self.get_current_user()
+        from_date = self.get_argument("from-date", "")
+        to_date = self.get_argument("to-date", "")
+        report = None
+        error = None
+
+        activities = self.application.storage.get_activities(user)
+        activity_dict = ActivityDict(activities)
+
+        if from_date or to_date:
+            if valid_date(from_date) and valid_date(to_date):
+                report = self._generate_report(extract_date(from_date), extract_date(to_date), user)
+            else:
+                error = True
+                
+        self.render(u"../resources/templates/app/statistics.html",
+                    options=options,
+                    current_user=self.get_current_user(),
+                    from_date=from_date,
+                    to_date=to_date,
+                    activities=activity_dict,
+                    error=error,
+                    report=report)
+
+
+
 class ProfileViewHandler(BaseHandler):
     """
     Responsible for showing the user profile options

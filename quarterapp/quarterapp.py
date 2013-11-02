@@ -112,6 +112,7 @@ def quarterapp_main():
             (r"/application/timesheet", TimesheetViewHandler),
             (r"/application/timesheet/([^\/]+)", TimesheetViewHandler),
             (r"/application/report", ReportViewHandler),
+            (r"/application/statistics", StatisticsViewHandler),
             (r"/application/profile", ProfileViewHandler),
 
             # Admin views

@@ -1,0 +1,33 @@
+{% extends "../resources/templates/wide_view_base.html" %}
+
+{% block title %}
+Statistics
+{% end %}
+
+{% block pre-main %}
+{% end %}
+
+{% block main %}
+<div class="container main statistics">
+    <section class="section-half">
+        <h3>Reported hours last 10 weeks</h3>
+        <canvas class="statistics-weeks" width="300" height="300"></canvas>
+    </section>
+    <section class="section-half">
+        <h3>Reported hours last 10 months</h3>
+        <canvas class="statistics-months" width="300" height="300"></canvas>
+    </section>
+</div>
+
+
+
+
+{% end %}
+
+{% block post-main %}
+<div class="container">
+</div>
+{% end %}
+
+{% block modals %}
+{% end %}
